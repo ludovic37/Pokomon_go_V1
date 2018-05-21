@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/menu_top"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_map_fragment"
+            android:title="@string/item_0"/>
+        <item
+            android:id="@+id/nav_pokomons_fragment"
+            android:title="@string/item_1"/>
+        <item
+            android:id="@+id/nav_pokedex_fragment"
+            android:title="@string/item_2"/>
+        <item
+            android:id="@+id/nav_bag_fragment"
+            android:title="@string/item_3"/>
+    </group>
+
+    <group
+        android:id="@+id/menu_bottom"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_profile_activity"
+            android:title="@string/item_4"/>
+    </group>
+</menu>
