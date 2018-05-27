@@ -33,7 +33,7 @@ public class UtilsAPI {
     public static final String URL_MAP_PARAMS = "lat=%s&lng=%s";
 
     public static final String URL_POKOMON = URL_BASE+"pokomon/%s";
-    public static final String URL_POKOMON_PARAMS = "{\"id\":\"%s\"}";
+    public static final String URL_POKOMON_PARAMS = "{\"type\":\"%s\"}";
 
     public static final String URL_POKOSTOP = URL_BASE+"pokostop/%s";
     //public static final String URL_POKOSTOP_PARAMS = "{\"id\":\"%s\"}";

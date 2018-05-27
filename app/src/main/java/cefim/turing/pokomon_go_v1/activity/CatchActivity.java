@@ -53,7 +53,10 @@ public class CatchActivity extends AppCompatActivity implements APICallback {
         mTextViewXP = (TextView) findViewById(R.id.textViewCatchPokomonXP);
         mPokostopPicture = (ImageView) findViewById(R.id.ImageViewCatchPokomonName);
 
-        Button mPokostopButton = (Button) findViewById(R.id.buttonCatch);
+        //Button mPokostopButton = (Button) findViewById(R.id.buttonCatch);
+        ImageView mImageViewPokeball = (ImageView) findViewById(R.id.catchPokeball);
+        ImageView mImageViewSuperball = (ImageView) findViewById(R.id.catchSuperball);
+        ImageView mImageViewHyperball = (ImageView) findViewById(R.id.catchHyperball);
 
         Intent intent = getIntent();
 
@@ -83,7 +86,37 @@ public class CatchActivity extends AppCompatActivity implements APICallback {
             finish();
         }
 
-        mPokostopButton.setOnClickListener(new View.OnClickListener() {
+        mImageViewPokeball.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    trytocatch("pokeball");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        mImageViewSuperball.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    trytocatch("superball");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        mImageViewHyperball.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    trytocatch("hyperball");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        /*mPokostopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
@@ -92,7 +125,7 @@ public class CatchActivity extends AppCompatActivity implements APICallback {
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
 
 
     }
@@ -103,41 +136,14 @@ public class CatchActivity extends AppCompatActivity implements APICallback {
         String data = response.body().string();
 
         if (code == 0){
-            try {
 
-                //retiter une pokoball
-                removeOnePokoball();
+            //retiter une pokoball
+            //removeOnePokoball();
 
-                /*String allItems = UtilsPreferences.getPreferences(mContext).getString("allitems");
-                JSONArray jsonArrayAllItem = null;
+            Log.d("POKOMON","capturer");
+            finish();
 
-                jsonArrayAllItem = new JSONArray(allItems);
-
-                for (int i = 0; i < jsonArrayAllItem.length(); i++) {
-
-                    JSONObject jsonobjectAllItem = jsonArrayAllItem.getJSONObject(i);
-
-                    String idItem = jsonobjectAllItem.getString("_id");
-                    String nameItem = jsonobjectAllItem.getString("name");
-                    int amount = jsonobjectAllItem.getInt("amount");
-
-                    if (nameItem.equals("pokoball") && amount > 0){
-                        amount = amount - 1;
-                        Object[] paramsValues = {idItem, nameItem, amount};
-                        String param = String.format(UtilsAPI.URL_BAG_PARAMS,paramsValues);
-                        UtilsAPI.getInstance().post(this,UtilsAPI.URL_BAG,param,UtilsPreferences.getPreferences(mContext).getString("token"),1);
-                    }
-
-
-                }*/
-                Log.d("POKOMON","capturer");
-                finish();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         }else{
-
             Log.d("----> ADD ITEM : ", data);
             UtilsPreferences.getPreferences(mContext).setKey("allitems",data);
         }
@@ -158,7 +164,7 @@ public class CatchActivity extends AppCompatActivity implements APICallback {
                     case 403:
                         //todo catch fail sup 1 pokoball
                         Log.d("POKOMON","fail");
-                        removeOnePokoball();
+                        //removeOnePokoball();
                         break;
                     case 404:
                         //todo pokomon plus dispo
@@ -166,18 +172,14 @@ public class CatchActivity extends AppCompatActivity implements APICallback {
                         finish();
                         break;
                 }
-            }else{
-
             }
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
             e.printStackTrace();
         }
 
     }
 
-    public void trytocatch() throws Exception {
+    public void trytocatch(String pokeball) throws Exception {
 
         String allItems = UtilsPreferences.getPreferences(mContext).getString("allitems");
         JSONArray jsonArrayAllItem = new JSONArray(allItems);
@@ -193,8 +195,23 @@ public class CatchActivity extends AppCompatActivity implements APICallback {
             String nameItem = jsonobjectAllItem.getJSONObject("item").getString("name");
             int amount = jsonobjectAllItem.getInt("amount");
 
+            if (nameItem.equals(pokeball) && amount > 0){
 
-            if (nameItem.equals("pokeball") && amount > 0){
+                String url = String.format(UtilsAPI.URL_POKOMON,idPokomon);
+                String paramCatch = String.format(UtilsAPI.URL_POKOMON_PARAMS,pokeball);
+                UtilsAPI.getInstance().post(this,url,paramCatch, UtilsPreferences.getPreferences(mContext).getString("token"),0);
+
+                amount = amount - 1;
+                ihavepokoball = true;
+
+                Object[] paramsValues = {idItem, nameItem, amount};
+                String paramItem = String.format(UtilsAPI.URL_BAG_PARAMS,paramsValues);
+
+                UtilsAPI.getInstance().post(this,UtilsAPI.URL_BAG,paramItem,UtilsPreferences.getPreferences(mContext).getString("token"),1);
+            }
+
+
+            /*if (nameItem.equals("pokeball") && amount > 0){
 
                 String url = String.format(UtilsAPI.URL_POKOMON,idPokomon);
                 UtilsAPI.getInstance().post(this,url,"{}", UtilsPreferences.getPreferences(mContext).getString("token"),0);
@@ -206,11 +223,12 @@ public class CatchActivity extends AppCompatActivity implements APICallback {
                 String param = String.format(UtilsAPI.URL_BAG_PARAMS,paramsValues);
 
                 UtilsAPI.getInstance().post(this,UtilsAPI.URL_BAG,param,UtilsPreferences.getPreferences(mContext).getString("token"),1);
-            }
+            }*/
 
         }
 
         if (!ihavepokoball){
+            Toast.makeText(mContext,"vous avez plus de "+pokeball, Toast.LENGTH_SHORT).show();
             Log.d("catch", "vous avez plus de pokeball");
         }
     }

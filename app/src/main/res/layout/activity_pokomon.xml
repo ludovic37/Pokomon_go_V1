@@ -33,11 +33,39 @@
         android:text="Dracolos"
         android:textSize="30sp"/>
 
-    <Button
-        android:id="@+id/buttonCatch"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="Attraper"/>
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/catchSuperball"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:src="@drawable/superball"/>
+
+        <ImageView
+            android:id="@+id/catchPokeball"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:src="@drawable/pokeball"/>
+
+
+        <ImageView
+            android:id="@+id/catchHyperball"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:src="@drawable/hyperball"/>
+
+    </LinearLayout>
 
 </LinearLayout>
