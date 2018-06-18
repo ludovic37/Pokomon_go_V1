@@ -96,38 +96,17 @@ public class PokostopActivity extends AppCompatActivity implements APICallback {
 
             try {
                 JSONArray jsonArrayNewItems = new JSONArray(newitems);
-                JSONArray jsonArrayAllItem = new JSONArray(allItems);
 
                 String message = "Vous avez obtenue: ";
 
                 for (int i = 0; i < jsonArrayNewItems.length(); i++) {
                     JSONObject jsonobject = jsonArrayNewItems.getJSONObject(i);
-                    Log.d("----> OneNewItems : ", jsonobject.toString());
-
-                    String idItem = jsonobject.getString("_id");
                     String nameItem = jsonobject.getString("name");
-                    int amount = 1;
 
                     message = message + "1 " + nameItem + " ";
-
-                    for (int j = 0; j < jsonArrayAllItem.length(); j++) {
-                        JSONObject jsonobjectAllItem = jsonArrayAllItem.getJSONObject(j);
-                        Log.d("----> OneByAllItems : ", jsonobjectAllItem.toString());
-                        if (jsonobjectAllItem.getJSONObject("item").getString("_id").equals(idItem)){
-                            int nbItem = jsonobjectAllItem.getInt("amount");
-                            amount = nbItem+1;
-                            break;
-                        }else{
-                            amount = 1;
-                        }
-                    }
-
-
-                    Object[] paramsValues = {idItem, nameItem, amount};
-                    String param = String.format(UtilsAPI.URL_BAG_PARAMS,paramsValues);
-
-                    UtilsAPI.getInstance().post(this,UtilsAPI.URL_BAG,param,UtilsPreferences.getPreferences(mContext).getString("token"),1);
                 }
+
+                UtilsAPI.getInstance().get(this,UtilsAPI.URL_BAG,null,UtilsPreferences.getPreferences(mContext).getString("token"),1);
 
                 final String finalMessage = message;
                 mHandler.post(new Runnable() {
@@ -148,9 +127,6 @@ public class PokostopActivity extends AppCompatActivity implements APICallback {
             UtilsPreferences.getPreferences(mContext).setKey("allitems",newitems);
         }
 
-
-        // Toast.makeText(mContext, "", Toast.LENGTH_SHORT).show();
-        // todo: Ajouter les items au sac
     }
 
     @Override

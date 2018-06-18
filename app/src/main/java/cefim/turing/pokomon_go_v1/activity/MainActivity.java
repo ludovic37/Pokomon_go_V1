@@ -169,18 +169,33 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         Log.d("lol","onRequestPermissionsResult");
+        Log.d("lol","");
         switch (requestCode) {
             case REQUEST_CODE_ASK_PERMISSIONS:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission Granted
-                    startLocationUpdates();
-                } else {
+                if (grantResults.length > 1){
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        // Permission Granted
+                        Log.d("lol","onRequestPermissionsResult GOOD");
+                        startLocationUpdates();
+                    } else {
+                        // Permission Denied
+                        Log.d("lol","onRequestPermissionsResult NOT GOOD");
+                        Toast.makeText(MainActivity.this, "Location Permission Denied", Toast.LENGTH_SHORT).show();
+                        //startActivity(new Intent(this, LoginActivity.class));
+                    }
+                }else {
                     // Permission Denied
+                    Log.d("lol","onRequestPermissionsResult NOT GOOD");
                     Toast.makeText(MainActivity.this, "Location Permission Denied", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(this, LoginActivity.class));
+                    //startActivity(new Intent(this, LoginActivity.class));
                 }
+
+
+                Log.d("lol","COUCOU");
                 break;
             default:
+
+                Log.d("lol","onRequestPermissionsResult Default");
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
